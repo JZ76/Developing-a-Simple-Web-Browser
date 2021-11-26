@@ -1,0 +1,193 @@
+F21SC: Feedback on Coursework 1
+
+-*- mode: outline; outline-regexp: "^To:" -*-
+
+F20SC/F21SC: Feedback on Coursework 1
+
+This document is a personalised coursework feedback.
+The first section covers general comments, recurring across submissions.
+The second part contains comments specific to your submission, with the overall marks at the end.
+
+All marks are out of 100
+The weighting of this CW is 50%
+
+The split of marks is by: requirements / report / code qual / initiative&professionalism / screencast
+F20SC out of: 55 / 15 / 15 / 10 / 5
+F21SC out of: 50 / 20 / 15 / 10 / 5
+
+General:
+
+Remember that the design part of the document should cover all of GUI, class and data design.
+Motivate the structure of your class hierarchy, how you use inheritance etc in order
+to make your code more easily maintainable. Motivate why you chose a specific data structure
+and the alternatives: think about the operations needed (by the app) on the data structure,
+and explain why these are well-supported for your choice of data structure.
+
+Choice of data structures: explain, why a data structure is suitable for a specific application
+based on the most common operations that you want to perform on it and properties required,
+e.g. for a history you need a cheap way to add an element, you want previous and next operations
+and you don't want to hard-wire a limit on the size; you sometimes need direct access to elements
+when you jump to an element in the history list; therefore an ArrayList is a good choice.
+Another interesting choice for the history list is a pair of stacks: the property that is
+well supported is, to easily delete the rest of the history; the invariant that needs to be fulfilled
+at each point in the execution is
+his = preHIS.Concat(postHIS)
+ie. when moving back and forth, the history doesn't change, although the contents of preHIS and postHIS
+change. In particular, if you use an unusual data structure like this, make sure you encapsulate the
+stacks in a class, make them private, and provide access only via operations such as prev/next. This
+way, when you change the underlying data structure, the API to the class shouldn't change.
+
+Also, (FORMAT, data storage) distinguish the data structure that you use in-memory as part of the logic of the program
+(List,Array?) from the data representation (XML) which is the format used to permanently store
+this data. Motivate the choice for both: in-memory data structure, external (persistent) representation.
+
+Take PERFormance considerations into account when implementing your program, and discuss the
+performance implications of your choices in the report. For example, what's the impact on
+heap consumption of your choice of data structures? Is it the best data structure to
+perform the operations that you need (direct access or prev/next traversal) etc?
+
+In general, SEPARATE the GUI and the application code. You should not end up with an
+all-in-one-class program. Rather pull out related functionality into application classes
+and only keep the immediate GUI components in the auto generated templates.
+
+A natural SEPARATION is to factor out the code for FAV and HIS lists. Describe clear interfaces
+for the main methods. Use <param> and <return> DOCU-TAGS for that. Look up the C#spec definition
+for the precise details. Even if you don't stick to the details, it's useful to think in terms
+of: what's the meaning of the parameters and the result? what are pre-conditions (assumptions) on the input
+(eg. an int var is always >1 etc)? what are the post-conditions (assumptions on return values) of the method?
+Think about possibilities to share code between FAV and HIS lists. Some operations will be
+the same, and ideally you want to model this using a class hierarchy, eg a Container class
+as parent and FAV and HIS lists children thereof.
+
+Docu-tags are very useful, XML style information typically put in comments just before the
+method, to specify its interface.
+For docu-tags see: http://msdn.microsoft.com/en-us/library/5ast78ax%28v=vs.110%29.aspx
+
+In general, avoid code DUPLication, rather pull out code into separate methods, if
+you find yourself repeating same or similar code segments.
+
+VALIDATION: validate input, eg. well-formed URL (could use regular-expressions, recommended, or
+just checking substrings; best: use System.Uri.IsWellFormedUriString()). BUT:
+Anti-VALIDATION/Anti-PATTERN: Do not have overly strong validation in your code, eg. requiring that
+every URL starts with www. or ends with .com is bad, because that is too strong and restricts
+the functionality of the app!
+Avoid overly restrictive CHECKs that prevent you from doing something that should be allowed,
+e.g. a check for valid URL must not stop you from visiting certain pages (https://);
+user friendly is only good if it let's you do all the stuff you need to do!
+
+Testing your application (either through unit testing or manual testing) should cover the main
+functionality required in the specification, but also cover border cases in the execution,
+eg. running the browser without the necessary home page, favourites etc files, to demonstrate that
+it doesn't throw uncaught exceptions.
+
+As emphasised throughout the course, try to use ADVANCED LANG FEATURES TO produce more concise
+code. In particular, you can use generics for a Container class, as basis for HIS and FAV. You can
+also implement indexers and the link for this class. Exceptions are crucial to catch errors in the
+code, so you need to put try-catch blocks at the right places. You should NEVER have an UNCAUGHT
+EXCEPTION in your program! When using anonymous methods keep them short, otw pull out the code into
+named methods.
+
+As a further step, consider applying design patterns in your code. These are valuable recipes
+for developing large-scale code, and help to structure this code. In particular, with the
+right pattern applied here, you should naturally get a separation between GUI and application
+code. You should know about design patterns from your undergraduate courses, if not here is the reference
+"Design patterns : elements of reusable object-oriented software ",
+Erich Gamma, Richard Helm, Ralph Johnson, John Vlissides, Addison-Wesley 1994, ISBN-13: 978-0201633610
+
+In the report, your writing should be concise, understandable. Avoid generic statements "user-friendly", "simple",
+rather describe why you think that you deliver on these features and which techniques and tools are employed.
+There are many good books out there on technical writing. A very good, concise one is
+"The Elements of Style" by William Strunk Jr. and E. B. White, Longman, 1999. ISBN-13: 978-0205309023
+
+
+Shortcuts used:
+HOME ... home page functionality
+FAV ... favourite (list)
+HIS ... history (list)
+app ... the application implemented in this coursework
+uEXC ... unhandled exception
+Xs ... extras (in terms of functionality)
+
+Specific:
+
+Specific comments to jz76
+Student: Jiancheng ZHANG
+Course: F21SC
+
+Report(13/20):
+Intro(0.5/2): should cover short spec, goals, and env (VS and C# versions; OS)
+Reqs(0/1): req list missing
+Design(2/3): should cover GUI, code and data structure design
+some short discussion of code structure; no class hier?
+solid choice of data structures, with good rationale
+good discussion of asymptotic complexity for these
+ok GUI discussion
+something on advanced language features
+discuss interface for data storage
+Users(2/2): ok
+Developers(1/2):
+some per-class code discussion
+you don't need a lot of code snippets; just discussing outstanding issues about the codem but:
+should give a discussion of method interfaces, discussing meaning of param, result and possibly pre- and post-conditions
+should also cover dependencies between classes
+discuss performance implication of eg. chosing files and data structures
+Testing(1.5/2): some manual testing: use table of expected/observed cases of testing; should cover more corner casesr
+Reflection(3/3):
+some good critical reflection on project;
+good summary of language concepts
+discusses perf aspects here
+should expand on use of advanced language features;
+limited discussion of sys vs scripting langs
+Concl(2/2): ok summary and reflection
+Other(1/2): lacking detail in early parts, much better in later parts
+Refs(0/1): use references where appropriate
+
+Code:(13/15)
+some good separation into classes; good separation between GUI and business logic
+limited encapsulation: FAV and HIS should be in separate classes, with fcts accessing/modifying them, but
+private Dictionary<String, URL> favorite = new Dictionary<string, URL>();
+is visible in entire BrowserManager class
+good abstraction using methods
+good discussion of method interfaces, discussing meaning of param, result (docu-tags)
+some good use of advanced language features (exceptions not much else)
+write-through like this is bad for PERFormance:
+public void addToFavorites(String surl, URL url)
+{
+favorite.Add(surl, url);
+writeBackFavorite();
+}
+on every add operation the file is written which is slow; is discussed in the report
+some issues about secure coding: no custom exceptions; limited checks for arguments (assumptions); use more restrictive access modifiers;
+some but limited input validation
+good comments
+
+
+Requirements(41/50):
+1. HTTP request(3/3): ok
+2. Check 404 etc(4/4): ok
+3. Display HTML(3/3): ok
+4. HOME(6/8): no set / edit HOME
+5. FAV(7/10): no edit FAV
+6. HIS(10/10): ok
+7. BulkD(3/3): ok
+8. GUI(2/3): basic
+9. Other(3/6): not mch Xs
+
+Initiative(4/10):
+solid work; not much extra
+
+Screencast(5/5): ok
+
+Overall:
+Out of: 50 / 20 / 15 / 10 / 5
+Split: 41 / 13 / 13 / 4 / 5
+Marks: 76
+
+
+
+
+
+
+
+
+
